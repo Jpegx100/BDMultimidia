@@ -1,22 +1,29 @@
 {% extends "layout.html" %}
 {% block body %}
-    <form action="{{ url_for('add_entry') }}" method=POST class=add-entry  enctype="multipart/form-data">
-      <dl>
-        <dt>Nome:
-        <dd><input type=text size=30 name=nome>
-        <dt>Metadados:
-        <dd><textarea name=metadados rows=5 cols=40></textarea>
-	      <dt>Imagem:
-	      <dd><input type=file name='imagem' accept="image/*">
-        <dd><input type=submit value=Adicionar>
-      </dl>
-    </form>
-  <ul class=entries>
-  {% for entry in entries %}
-    <li><h2>{{ entry.nome }}</h2>{{ entry.metadados|safe }}
-    <img style="width:200px;height:300px" src="data:;base64,{{ entry.imagem }}"/>
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-  </ul>
+
+<div class="row">
+  <div class="col-md-3">
+      <form action="{{ url_for('add_entry') }}" method=POST class=add-entry  enctype="multipart/form-data">
+          <label>Nome</label>
+          <input type="text" size="30" name="nome" class="form-control">
+	        <label>Imagem</label>
+          <label class="btn btn-default btn-file">
+            Escolher Imagem <input type="file" hidden accept="image/*" name="imagem">
+          </label>
+          <button type="submit" class="btn btn-primary" style="margin:20px 0px;align:center; width:100%" width="200px">Enviar</button>
+      </form>
+  </div>
+  <div class="col-md-9">
+    {% for entry in entries %}
+        <div class="row" style="border: 2px solid;border-radius:10px; margin:20px; padding:20px">
+          <h1>{{ entry.nome }}</h1>
+          <hr>
+          <img style="width:400px;height:600px;align:center" src="data:;base64,{{ entry.imagem }}"/>
+          <br />
+          <hr>
+          {{ entry.metadados }}
+        </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

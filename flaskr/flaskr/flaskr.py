@@ -59,9 +59,12 @@ def show_entries():
 @app.route('/add', methods=['POST'])
 def add_entry():
 	imagem = request.files['imagem'].read()
+	metadados = "{filename: " + str(request.files['imagem'].filename) + ", " + \
+				" type: " + str(request.files['imagem'].content_type) + ", " + \
+				" tamanho: " + str(len(imagem)) + "}"
+
 	db = get_db()
-	db.execute('insert into imagens (nome, metadados, imagem) values (?, ?, ?)',[request.form['nome'], request.form['metadados'], imagem])
+	db.execute('insert into imagens (nome, metadados, imagem) values (?, ?, ?)',[request.form['nome'], metadados, imagem])
 	db.commit()
 	flash('New entry was successfully posted')
 	return redirect(url_for('show_entries'))
-
